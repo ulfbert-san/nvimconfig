@@ -9,7 +9,7 @@ return {
             
             -- Popup options for Neovim (optimized for signature help)
             vim.g.OmniSharp_popup_options = {
-                winblend = 30,
+                winblend = 0,
                 winhl = 'Normal:Normal,FloatBorder:ModeMsg',
                 border = 'rounded'
             }
@@ -56,20 +56,20 @@ return {
 
                     -- Navigation mappings
                     vim.keymap.set("n", "gd", "<Plug>(omnisharp_go_to_definition)", opts)
-                    vim.keymap.set("n", "<Leader>osfu", "<Plug>(omnisharp_find_usages)", opts)
-                    vim.keymap.set("n", "<Leader>osfi", "<Plug>(omnisharp_find_implementations)", opts)
-                    vim.keymap.set("n", "<Leader>ospd", "<Plug>(omnisharp_preview_definition)", opts)
-                    vim.keymap.set("n", "<Leader>ospi", "<Plug>(omnisharp_preview_implementations)", opts)
-                    vim.keymap.set("n", "<Leader>ost", "<Plug>(omnisharp_type_lookup)", opts)
-                    vim.keymap.set("n", "<Leader>osd", "<Plug>(omnisharp_documentation)", opts)
-                    vim.keymap.set("n", "<Leader>osfs", "<Plug>(omnisharp_find_symbol)", opts)
-                    vim.keymap.set("n", "<Leader>osfx", "<Plug>(omnisharp_fix_usings)", opts)
+                    vim.keymap.set("n", "<Leader>pfu", "<Plug>(omnisharp_find_usages)", opts)
+                    vim.keymap.set("n", "<Leader>pfi", "<Plug>(omnisharp_find_implementations)", opts)
+                    vim.keymap.set("n", "<Leader>ppd", "<Plug>(omnisharp_preview_definition)", opts)
+                    vim.keymap.set("n", "<Leader>ppi", "<Plug>(omnisharp_preview_implementations)", opts)
+                    vim.keymap.set("n", "<Leader>pt", "<Plug>(omnisharp_type_lookup)", opts)
+                    vim.keymap.set("n", "<Leader>pd", "<Plug>(omnisharp_documentation)", opts)
+                    vim.keymap.set("n", "<Leader>pfs", "<Plug>(omnisharp_find_symbol)", opts)
+                    vim.keymap.set("n", "<Leader>pfx", "<Plug>(omnisharp_fix_usings)", opts)
                     vim.keymap.set("n", "<C-\\>", "<Plug>(omnisharp_signature_help)", opts)
                     vim.keymap.set("i", "<C-\\>", "<Plug>(omnisharp_signature_help)", opts)
 
                     -- Additional signature help keymaps
                     vim.keymap.set("i", "<C-Space>", ":OmniSharpSignatureHelp<CR>", opts)
-                    vim.keymap.set("n", "<Leader>ospd", ":OmniSharpPreviewDefinition<CR>", opts)
+                    vim.keymap.set("n", "<Leader>ppd", ":OmniSharpPreviewDefinition<CR>", opts)
 
                     -- Close popups
                     vim.keymap.set("i", "<C-e>", function()
@@ -97,18 +97,18 @@ return {
                     vim.keymap.set("n", "]]", "<Plug>(omnisharp_navigate_down)", opts)
 
                     -- Code actions and formatting
-                    vim.keymap.set("n", "<Leader>osgcc", "<Plug>(omnisharp_global_code_check)", opts)
-                    vim.keymap.set("n", "<Leader>osca", "<Plug>(omnisharp_code_actions)", opts)
-                    vim.keymap.set("x", "<Leader>osca", "<Plug>(omnisharp_code_actions)", opts)
-                    vim.keymap.set("n", "<Leader>os.", "<Plug>(omnisharp_code_action_repeat)", opts)
-                    vim.keymap.set("x", "<Leader>os.", "<Plug>(omnisharp_code_action_repeat)", opts)
-                    vim.keymap.set("n", "<Leader>os=", "<Plug>(omnisharp_code_format)", opts)
-                    vim.keymap.set("n", "<Leader>osnm", "<Plug>(omnisharp_rename)", opts)
+                    vim.keymap.set("n", "<Leader>pgcc", "<Plug>(omnisharp_global_code_check)", opts)
+                    vim.keymap.set("n", "<Leader>pca", "<Plug>(omnisharp_code_actions)", opts)
+                    vim.keymap.set("x", "<Leader>pca", "<Plug>(omnisharp_code_actions)", opts)
+                    vim.keymap.set("n", "<Leader>p.", "<Plug>(omnisharp_code_action_repeat)", opts)
+                    vim.keymap.set("x", "<Leader>p.", "<Plug>(omnisharp_code_action_repeat)", opts)
+                    vim.keymap.set("n", "<Leader>p=", "<Plug>(omnisharp_code_format)", opts)
+                    vim.keymap.set("n", "<Leader>pnm", "<Plug>(omnisharp_rename)", opts)
 
                     -- Server control
-                    vim.keymap.set("n", "<Leader>osre", "<Plug>(omnisharp_restart_server)", opts)
-                    vim.keymap.set("n", "<Leader>osst", "<Plug>(omnisharp_start_server)", opts)
-                    vim.keymap.set("n", "<Leader>ossp", "<Plug>(omnisharp_stop_server)", opts)
+                    vim.keymap.set("n", "<Leader>pre", "<Plug>(omnisharp_restart_server)", opts)
+                    vim.keymap.set("n", "<Leader>pst", "<Plug>(omnisharp_start_server)", opts)
+                    vim.keymap.set("n", "<Leader>psp", "<Plug>(omnisharp_stop_server)", opts)
 
                     -- Signature help on opening parenthesis (only after method names)
                     vim.keymap.set("i", "(", function()

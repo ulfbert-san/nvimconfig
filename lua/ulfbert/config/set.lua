@@ -1,6 +1,3 @@
--- Cursor
-vim.opt.guicursor = ""
-
 -- Line numbers
 vim.opt.nu = true
 vim.opt.relativenumber = true
@@ -54,3 +51,6 @@ vim.opt.splitright = true
 -- Other
 vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
+
+-- MatchParen: Verhindert Cursor-Flackern beim Highlighting
+vim.g.matchparen_disable_cursor_hl = 1

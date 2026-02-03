@@ -3,7 +3,7 @@ return {
     priority = 1000,
     lazy = false,
     opts = {
-        animate = {},
+        animate = { enabled = false },  -- Deaktiviert, verursacht Cursor-Flackern
         bigfile = { enabled = true },
         dashboard = {
             enabled = true,
@@ -15,14 +15,30 @@ return {
         },
         dim = { enabled = false },
         explorer = {},
+        picker = {
+            win = {
+                list = {
+                    keys = {
+                        ["s"] = "edit_vsplit",
+                    },
+                },
+            },
+        },
         git = {},
         gitbrowse = {},
         image = { enabled = false },
         indent = {},
         input = {},
         layout = {},
-        lazygit = {},
-        notifier = {},
+        lazygit = {
+            win = {
+                position = "float",
+                width = 0.9,
+                height = 0.9,
+                border = "rounded",
+            },
+        },
+        notifier = { enabled = false },  -- Deaktiviert, verursacht Cursor-Flackern mit LSP
         quickfile = {},
         scope = {},
         scratch = {},
@@ -31,16 +47,9 @@ return {
             enabled = true,
             win = {
                 style = "terminal",
-                position = "float",
-                width = 0.8,
-                height = 0.8,
-                row = 0.1,
-                col = 0.1,
-                border = "rounded",
-                wo = {
-                    winblend = 0,
-                    winhighlight = "Normal:Normal,NormalFloat:Normal",
-                },
+                position = "bottom",
+                height = 0.3,
+                border = "top",
             },
             shell = vim.o.shell,
         },
@@ -54,8 +63,7 @@ return {
         { "<leader>gB", function() require("snacks").gitbrowse() end, desc = "Git Browse", mode = { "n", "v" } },
 
         -- Terminal
-        { "<c-/>", function() require("snacks").terminal() end, desc = "Toggle Terminal" },
-        { "<c-_>", function() require("snacks").terminal() end, desc = "which_key_ignore" },
+        { "<A-t>", function() require("snacks").terminal() end, desc = "Toggle Terminal", mode = { "n", "t" } },
 
         -- Scratch
         { "<leader>.", function() require("snacks").scratch() end, desc = "Toggle Scratch Buffer" },

@@ -38,3 +38,10 @@ vim.opt.background = "dark"
 -- Colorscheme wird jetzt über plugins/vsdark.lua geladen
 
 vim.g.undotree_DiffCommand = "FC"
+
+-- Cursor Blinken deaktivieren (nach allen Plugins)
+vim.api.nvim_create_autocmd({"VimEnter", "BufEnter", "WinEnter"}, {
+    callback = function()
+        vim.opt.guicursor = "n-v-c:block-blinkon0-blinkoff0-blinkwait0,i-ci-ve:ver25-blinkon0-blinkoff0-blinkwait0,r-cr:hor20-blinkon0-blinkoff0-blinkwait0,o:hor50-blinkon0-blinkoff0-blinkwait0"
+    end,
+})

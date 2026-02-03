@@ -18,33 +18,52 @@ return {
                 end
             }
         },
-        config = function()            
-            local function custom_branch()
-                local branch = vim.fn.system("git branch --show-current 2>nul")
-                branch = vim.trim(branch)
-                
-                if branch ~= "" and vim.v.shell_error == 0 then
-                    return ' 󰘬 ' .. branch
-                end
-                                
+        config = function()
+            -- Cache für Branch-Name (wird nur bei BufEnter/FocusGained aktualisiert)
+            local cached_branch = ''
+            local cached_branch_display = ''
+            local cached_branch_color = { fg = '#00A86A' }
+
+            local function update_branch_cache()
+                -- Nur .git/HEAD lesen, KEIN Shell-Aufruf
                 local head_file = vim.fn.findfile('.git/HEAD', '.;')
                 if head_file ~= "" then
-                    local head_content = vim.fn.readfile(head_file)
-                    if #head_content > 0 then
+                    local ok, head_content = pcall(vim.fn.readfile, head_file)
+                    if ok and #head_content > 0 then
                         local ref = head_content[1]:match('ref: refs/heads/(.+)')
                         if ref then
-                            return ' 󰘬 ' .. ref
+                            cached_branch = ref
+                            cached_branch_display = ' 󰘬 ' .. ref
+                            if ref == 'main' or ref == 'master' then
+                                cached_branch_color = { fg = '#F7819F' }  -- Rot
+                            else
+                                cached_branch_color = { fg = '#00A86A' }  -- Grün
+                            end
+                            return
                         end
                     end
                 end
-                
-                return ''
+                cached_branch = ''
+                cached_branch_display = ''
+                cached_branch_color = { fg = '#00A86A' }
             end
-            
-            -- Custom icon component
-            local function filename_icon()
-                return '󱚝'
+
+            -- Cache beim Start und bei Buffer/Focus-Wechsel aktualisieren
+            update_branch_cache()
+            vim.api.nvim_create_autocmd({'BufEnter', 'FocusGained', 'DirChanged'}, {
+                callback = update_branch_cache
+            })
+
+            local function custom_branch()
+                return cached_branch_display
             end
+
+            local function branch_color()
+                return cached_branch_color
+            end
+
+            -- Statischer Icon-String (keine Funktion nötig)
+            local robot_icon = '󰈸'
                          
             local colors = {
                 bg       = '#1F1F1F',
@@ -91,7 +110,7 @@ return {
                 options = {
                     icons_enabled = true,
                     theme = custom_theme,
-                    component_separators = { left = '󰷵', right = '|'},
+                    component_separators = { left = '', right = '|'},
                     section_separators = { left = '', right = ''},
                     disabled_filetypes = {
                       statusline = {},
@@ -105,24 +124,23 @@ return {
                       statusline = 1000,
                       tabline = 1000,
                       winbar = 1000,
-                      refresh_time = 16, -- ~60fps
-                      events = {
-                        'WinEnter',
-                        'BufEnter',
-                        'BufWritePost',
-                        'SessionLoadPost',
-                        'FileChangedShellPost',
-                        'VimResized',
-                        'Filetype',
-                        'CursorMoved',
-                        'CursorMovedI',
-                        'ModeChanged',
-                      },
                     }
                   },
                   sections = {
                     lualine_a = {'mode'},
-                    lualine_b = {custom_branch, 'diff', 'diagnostics'},
+                    lualine_b = {
+                        { custom_branch, color = branch_color },
+                        { function() return robot_icon end, color = { fg = '#FFFFFF' } },  -- Weiß
+                        {
+                            'diff',
+                            diff_color = {
+                                added    = { fg = '#00A86A' },  -- Kräftiges Grün
+                                modified = { fg = '#1E90FF' },  -- Kräftiges Blau
+                                removed  = { fg = '#FF4500' },  -- Kräftiges Rot-Orange
+                            },
+                        },
+                        'diagnostics'
+                    },
                     lualine_c = {'filename'},
                     lualine_x = {'encoding', 'fileformat', 'filetype'},
                     lualine_y = {'progress'},
