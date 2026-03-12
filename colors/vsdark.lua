@@ -104,7 +104,8 @@ hi("ModeMsg", { fg = colors.fg, bold = true })
 hi("MoreMsg", { fg = colors.type })
 hi("Question", { fg = colors.type })
 hi("Title", { fg = colors.keyword, bold = true })
-hi("Directory", { fg = colors.keyword })
+hi("Directory", { fg = "#d4a959" })
+hi("SnacksPickerDirectory", { fg = colors.fg })
 
 -- ============================================================================
 -- Diff
@@ -302,6 +303,17 @@ hi("DiagnosticSignHint", { fg = colors.hint })
 hi("GitSignsAdd", { fg = colors.git_add })
 hi("GitSignsChange", { fg = colors.git_change })
 hi("GitSignsDelete", { fg = colors.git_delete })
+
+-- ============================================================================
+-- Snacks Explorer Git Status
+-- ============================================================================
+hi("SnacksPickerGitStatusModified", { fg = "#e2c08d" })
+hi("SnacksPickerGitStatusStaged", { fg = colors.hint })
+hi("SnacksPickerGitStatusAdded", { fg = "#89d185" })
+hi("SnacksPickerGitStatusDeleted", { fg = colors.error })
+hi("SnacksPickerGitStatusUntracked", { fg = "#89d185" })
+hi("SnacksPickerGitStatusRenamed", { fg = "#e2c08d" })
+hi("SnacksPickerGitStatusUnmerged", { fg = colors.error })
 
 -- ============================================================================
 -- Telescope

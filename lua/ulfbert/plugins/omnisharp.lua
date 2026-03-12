@@ -3,6 +3,17 @@ return {
     {
         "OmniSharp/omnisharp-vim",
         ft = { "cs", "csx", "vb" },
+        init = function()
+            -- Wenn eine .sln im cwd liegt, OmniSharp sofort laden
+            if vim.fn.glob("*.sln") ~= "" then
+                vim.api.nvim_create_autocmd("UIEnter", {
+                    once = true,
+                    callback = function()
+                        require("lazy").load({ plugins = { "omnisharp-vim" } })
+                    end,
+                })
+            end
+        end,
         config = function()
             -- OmniSharp configuration based on example config
             vim.g.OmniSharp_popup_position = 'peek'
@@ -102,8 +113,21 @@ return {
                     vim.keymap.set("x", "<Leader>pca", "<Plug>(omnisharp_code_actions)", opts)
                     vim.keymap.set("n", "<Leader>p.", "<Plug>(omnisharp_code_action_repeat)", opts)
                     vim.keymap.set("x", "<Leader>p.", "<Plug>(omnisharp_code_action_repeat)", opts)
-                    vim.keymap.set("n", "<Leader>p=", "<Plug>(omnisharp_code_format)", opts)
-                    vim.keymap.set("n", "<Leader>pnm", "<Plug>(omnisharp_rename)", opts)
+                    vim.keymap.set("n", "<Leader>pm", "<Plug>(omnisharp_code_format)", opts)
+                    vim.keymap.set("n", "<Leader>pnm", function()
+                        local bufnr = vim.api.nvim_get_current_buf()
+                        local augroup = vim.api.nvim_create_augroup("omnisharp_rename_fix", { clear = true })
+                        vim.api.nvim_create_autocmd("TextChanged", {
+                            group = augroup,
+                            buffer = bufnr,
+                            once = true,
+                            callback = function()
+                                vim.treesitter.stop(bufnr)
+                                vim.treesitter.start(bufnr)
+                            end
+                        })
+                        vim.cmd("OmniSharpRename")
+                    end, opts)
 
                     -- Server control
                     vim.keymap.set("n", "<Leader>pre", "<Plug>(omnisharp_restart_server)", opts)

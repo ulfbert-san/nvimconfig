@@ -1,16 +1,52 @@
 local M = {
     "nvim-treesitter/nvim-treesitter",
-    build = function()
-        require("nvim-treesitter.install").update({ with_sync = true })()
-    end,
+    dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
+    build = ":TSUpdate",
     priority = 100,
-    config = function()
-        require("nvim-treesitter.install").compilers = { "zig", "clang", "gcc", "cl" }
-        require("nvim-treesitter.configs").setup({
-            ensure_installed = { "c_sharp", "lua", "vim", "vimdoc" },
-            auto_install = true,
-            highlight = { enable = true },
+    opts = {
+        ensure_installed = { "c_sharp", "lua", "vim", "vimdoc" },
+        auto_install = true,
+        highlight = { enable = true },
+        indent = { enable = true },
+    },
+    config = function(_, opts)
+        require("nvim-treesitter.install").compilers = { "clang", "zig", "gcc", "cl" }
+        require("nvim-treesitter.configs").setup(opts)
+
+        -- Textobjects: move setup
+        require("nvim-treesitter-textobjects").setup({
+            move = { set_jumps = true },
         })
+
+        local move = require("nvim-treesitter-textobjects.move")
+
+        -- Zwischen Funktionen navigieren
+        vim.keymap.set({ "n", "x", "o" }, "gn", function()
+            move.goto_next_start("@function.outer", "textobjects")
+        end, { desc = "Nächste Funktion (Start)" })
+        vim.keymap.set({ "n", "x", "o" }, "gN", function()
+            move.goto_next_end("@function.outer", "textobjects")
+        end, { desc = "Nächste Funktion (Ende)" })
+        vim.keymap.set({ "n", "x", "o" }, "gp", function()
+            move.goto_previous_start("@function.outer", "textobjects")
+        end, { desc = "Vorherige Funktion (Start)" })
+        vim.keymap.set({ "n", "x", "o" }, "gP", function()
+            move.goto_previous_end("@function.outer", "textobjects")
+        end, { desc = "Vorherige Funktion (Ende)" })
+
+        -- Zwischen Klassen navigieren
+        vim.keymap.set({ "n", "x", "o" }, "]c", function()
+            move.goto_next_start("@class.outer", "textobjects")
+        end, { desc = "Nächste Klasse (Start)" })
+        vim.keymap.set({ "n", "x", "o" }, "]C", function()
+            move.goto_next_end("@class.outer", "textobjects")
+        end, { desc = "Nächste Klasse (Ende)" })
+        vim.keymap.set({ "n", "x", "o" }, "[c", function()
+            move.goto_previous_start("@class.outer", "textobjects")
+        end, { desc = "Vorherige Klasse (Start)" })
+        vim.keymap.set({ "n", "x", "o" }, "[C", function()
+            move.goto_previous_end("@class.outer", "textobjects")
+        end, { desc = "Vorherige Klasse (Ende)" })
 
         -- Treesitter-based folding für unterstützte Dateitypen
         vim.api.nvim_create_autocmd("FileType", {

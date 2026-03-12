@@ -41,6 +41,7 @@ vim.g.have_nerd_font = true
 -- Editing behavior
 vim.opt.backspace = "indent,eol,start"
 vim.opt.hidden = true
+vim.opt.autowriteall = true
 vim.opt.startofline = false
 vim.opt.mouse = "a"
 

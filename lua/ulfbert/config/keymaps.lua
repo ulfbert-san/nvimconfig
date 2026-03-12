@@ -115,3 +115,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
     end,
 })
+
+-- Close Quickfix and Location List windows
+vim.keymap.set("n", "<leader>q", function()
+    vim.cmd("cclose")
+    vim.cmd("lclose")
+end, { desc = "Close Quickfix/Location List" })

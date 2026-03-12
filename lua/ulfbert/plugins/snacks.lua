@@ -16,6 +16,17 @@ return {
         dim = { enabled = false },
         explorer = {},
         picker = {
+            icons = {
+                git = {
+                    staged    = "✓",
+                    added     = "󰐗",
+                    deleted   = "󰍷",
+                    modified  = "󰏫",
+                    renamed   = "",
+                    unmerged  = " ",
+                    untracked = "󰐗",
+                },
+            },
             win = {
                 list = {
                     keys = {
@@ -27,7 +38,10 @@ return {
         git = {},
         gitbrowse = {},
         image = { enabled = false },
-        indent = {},
+        indent = {
+            indent = { char = "┊" },
+            scope = { char = "┊" },
+        },
         input = {},
         layout = {},
         lazygit = {
